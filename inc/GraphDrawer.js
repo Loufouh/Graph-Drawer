@@ -15,8 +15,7 @@ class GraphDrawer {
 		this.widthRange = new Vector(-100, 100);
 		this.heightRange = new Vector(-100, 100);
 
-		this.zoomRatio = new Vector(canvas.width/(this.widthRange.y - this.widthRange.x),
-									canvas.height/(this.heightRange.y - this.heightRange.x));
+		this.updateZoomRatio();
 
 		this.gridScale = new Vector(5, 5);
 
@@ -32,7 +31,6 @@ class GraphDrawer {
 		this.drawAxis();
 	}
 	
-
 	drawGrid() {
 		if(this.isDrawGrid) {
 			strokeWeight(0.2)
@@ -48,16 +46,28 @@ class GraphDrawer {
 
 		let originPos = this.getAbsolutePos(new Vector(0, 0));
 
-		if(this.isDrawXAxis && this.heightRange.x <= 0 && this.heightRange.y >= 0) {
-			let absoluteY = this.heightRange.y*( canvas.height/(this.heightRange.y - this.heightRange.x) );
-
+		// If draw x axis is activated and it is in screen range
+		if(this.isDrawXAxis && this.heightRange.x <= 0 && this.heightRange.y >= 0)
 			line(0, originPos.y, canvas.width, originPos.y, this.context);
-		}
 
-		if(this.isDrawYAxis && this.widthRange.x <= 0 && this.widthRange.y >= 0) {
+		// If draw y axis is activated and it is in screen range
+		if(this.isDrawYAxis && this.widthRange.x <= 0 && this.widthRange.y >= 0)
 			line(originPos.x, 0, originPos.x, canvas.height, this.context);
-		}
+	}
 
+	setWidthRange(min, max) {
+		this.widthRange = new Vector(min, max);
+		this.updateZoomRatio();
+	}
+
+	setHeightRange(min, max) {
+		this.heightRange = new Vector(min, max);
+		this.updateZoomRatio();
+	}
+
+	updateZoomRatio() {
+		this.zoomRatio = new Vector(canvas.width/(this.widthRange.y - this.widthRange.x),
+									canvas.height/(this.heightRange.y - this.heightRange.x));
 	}
 
 	getAbsolutePos(pos) {
@@ -72,14 +82,6 @@ class GraphDrawer {
 
 	setFunctionRange(min, max=Infinity) {
 		this.funcRange = new Vector(min, max);
-	}
-
-	setWidthRange(min, max) {
-		this.widthRange = new Vector(min, max);
-	}
-
-	setHeightRange(min, max) {
-		this.heightRange = new Vector(min, max);
 	}
 
 	setGridScale(x, y) {
