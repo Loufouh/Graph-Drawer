@@ -15,11 +15,9 @@ class GraphDrawer {
 		this.widthRange = new Vector(-100, 100);
 		this.heightRange = new Vector(-100, 100);
 
-		this.updateZoomRatio();
-
 		this.gridScale = new Vector(5, 5);
 
-		this.resolution = 10;
+		this.resolution = 1;
 
 		this.isDrawGrid = true;
 		this.isDrawXAxis = true;
@@ -29,6 +27,7 @@ class GraphDrawer {
 	draw() {
 		this.drawGrid();
 		this.drawAxis();
+		this.drawCurve();
 	}
 	
 	drawGrid() {
@@ -36,7 +35,7 @@ class GraphDrawer {
 			strokeWeight(0.2)
 			stroke(Color.rgb(160));
 			grid(new Vector(0, 0), new Vector(this.gridScale.x*canvas.width/(this.widthRange.y - this.widthRange.x), this.gridScale.y*canvas.height/(this.heightRange.y - this.heightRange.x)), 
-				 new Vector(0, 0), new Vector(this.canvas.width, this.canvas.height), this.context);
+			     new Vector(0, 0), new Vector(this.canvas.width, this.canvas.height), this.context);
 		}
 	}
 
@@ -55,24 +54,35 @@ class GraphDrawer {
 			line(originPos.x, 0, originPos.x, canvas.height, this.context);
 	}
 
+	drawCurve() {
+		let drawRange = new Vector( (this.funcRange.x > this.widthRange.x) ? this.funcRange.x : this.widthRange.x,
+					    (this.funcRange.y < this.widthRange.y) ? this.func.Range.y : this.widthRange.y);
+
+		let currentPoint = this.getAbsolutePos( new Vector(drawRange.x, this.func(drawRange.x)) );
+
+		strokeWeight(2);
+		stroke(Color.rgb(110, 255, 110));
+
+		for(let i = drawRange.x + this.resolution; i < drawRange.y + this.resolution; i += this.resolution) {
+			let lastPoint = currentPoint;
+			currentPoint = this.getAbsolutePos( new Vector(i, this.func(i)) );
+
+			line(lastPoint.x, lastPoint.y, currentPoint.x, currentPoint.y, this.context);
+		}
+		
+	}
+
 	setWidthRange(min, max) {
 		this.widthRange = new Vector(min, max);
-		this.updateZoomRatio();
 	}
 
 	setHeightRange(min, max) {
 		this.heightRange = new Vector(min, max);
-		this.updateZoomRatio();
-	}
-
-	updateZoomRatio() {
-		this.zoomRatio = new Vector(canvas.width/(this.widthRange.y - this.widthRange.x),
-									canvas.height/(this.heightRange.y - this.heightRange.x));
 	}
 
 	getAbsolutePos(pos) {
-		return new Vector(pos.x - this.widthRange.x*this.zoomRatio.x,
-						  pos.y + this.heightRange.y*this.zoomRatio.y);
+		return new Vector(Math.map(pos.x, this.widthRange.x, this.widthRange.y, 0, canvas.width),
+				  Math.map(pos.y, this.heightRange.x, this.heightRange.y, canvas.height, 0));
 	}
 
 	setFunction(func, color=Color.rgb(0)) {

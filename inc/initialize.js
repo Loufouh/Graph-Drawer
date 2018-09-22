@@ -17,7 +17,12 @@ function init() {
 		canvas.height = canvas.width/1.618;
 	}
 
-	let drawer = new GraphDrawer(canvas);
+	drawer = new GraphDrawer(canvas);
+	drawer.setFunction(x => Math.exp(x));
+	drawer.setWidthRange(-5, 5)
+	drawer.setHeightRange(-1, 5)
+	drawer.setResolution(0.001)
+	drawer.setGridScale(0.5, 0.5);
 
 	drawer.draw();
 }
