@@ -56,7 +56,7 @@ class GraphDrawer {
 
 	drawCurve() {
 		let drawRange = new Vector( (this.funcRange.x > this.widthRange.x) ? this.funcRange.x : this.widthRange.x,
-					    (this.funcRange.y < this.widthRange.y) ? this.func.Range.y : this.widthRange.y);
+					    (this.funcRange.y < this.widthRange.y) ? this.funcRange.y : this.widthRange.y);
 
 		let currentPoint = this.getAbsolutePos( new Vector(drawRange.x, this.func(drawRange.x)) );
 
