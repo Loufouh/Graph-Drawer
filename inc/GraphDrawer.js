@@ -61,7 +61,7 @@ class GraphDrawer {
 		let currentPoint = this.getAbsolutePos( new Vector(drawRange.x, this.func(drawRange.x)) );
 
 		strokeWeight(2);
-		stroke(Color.rgb(110, 255, 110));
+		stroke(this.funcColor);
 
 		for(let i = drawRange.x + this.resolution; i < drawRange.y + this.resolution; i += this.resolution) {
 			let lastPoint = currentPoint;
