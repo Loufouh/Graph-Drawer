@@ -99,7 +99,7 @@ class GraphDrawer {
 	}
 
 	setResolution(resolution) {
-		this.resolution = resolution;
+		this.resolution = 1/resolution;
 	}
 
 	setDrawGrid(isDrawGrid) {

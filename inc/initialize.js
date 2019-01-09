@@ -19,10 +19,10 @@ function init() {
 
 	drawer = new GraphDrawer(canvas);
 
-	drawer.setFunction(x => Math.exp(x));
+	drawer.setFunction(x => 2 + 0.2*Math.sin(x*5) - x/4 );
 	drawer.setWidthRange(-5, 5)
 	drawer.setHeightRange(-1, 5)
-	drawer.setResolution(0.001)
+	drawer.setResolution(100)
 	drawer.setGridScale(0.5, 0.5);
 
 	drawer.draw();
